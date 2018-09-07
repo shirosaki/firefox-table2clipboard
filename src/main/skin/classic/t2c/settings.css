@@ -1,7 +1,61 @@
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-
 .link {
   color: #0000FF;
   text-decoration: underline !important;
   cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tabs > div {
+  margin: 5px 5px 2px 5px;
+  border-radius: 5px 5px 0 0;
+  background: #eee;
+  color: #000;
+  display: block;
+  padding: 5px 15px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.tabs > div.active {
+  background: #F5F0CF;
+}
+
+.tabs > div:hover {
+  background: #F5F0CF;
+}
+
+.tab-contents section {
+  margin: 0 5px 5px 5px;
+  border-radius: 5px;
+  background: #F5F0CF;
+  padding: 15px;
+}
+
+.tab-contents > div {
+  display: none;
+}
+.tab-contents > div.active {
+  display: block;
+}
+
+.flex-item {
+  display: flex;
+}
+
+.flex-item-end {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+textarea {
+  width: 100%;
+}
+
+.save-button {
+  padding: 5px 20px;
+  margin: 10px;
+  font-size: 1.2em;
 }

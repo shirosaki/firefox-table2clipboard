@@ -1,0 +1,41 @@
+{
+  "manifest_version": 2,
+  "name": "Table2Clipboard",
+  "version": "1.6.0.0",
+
+  "description": "Allow to copy to clipboard an HTML table rows/columns selection correctly formatted.",
+  "applications": {
+    "gecko": {
+      "id": "t2c@shirosaki",
+      "strict_min_version": "60.0"
+    }
+  },
+
+  "icons": {
+    "16": "icons/t2c-16x16.png",
+    "32": "icons/t2c-32x32.png",
+    "64": "icons/t2c-64x64.png",
+    "128": "icons/t2c-128x128.png"
+  },
+
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+
+  "options_ui": {
+    "browser_style": true,
+    "page": "src/main/content/t2c/settings/settings.html"
+  },
+
+  "permissions": [
+    "<all_urls>",
+    "tabs",
+    "menus",
+    "storage",
+    "clipboardWrite"
+  ],
+
+  "default_locale": "en"
+}

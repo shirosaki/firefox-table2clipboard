@@ -95,7 +95,7 @@ if (typeof(table2clipboard.builders.html) == "undefined") {
         var applied = false;
 
         if (rules) {
-            var rule = rules[node.localName.toLowerCase()] || rules['*'];
+            var rule = rules[node.nodeName.toLowerCase()] || rules['*'];
 
             if (rule) {
                 table2clipboard.common.log("using tag " + rule.tagName);

@@ -46,26 +46,14 @@ if (typeof(table2clipboard.css) == "undefined") {
 table2clipboard.css.utils = {};
 
 (function() {
-var inIDOMUtils = Components.classes["@mozilla.org/inspector/dom-utils;1"]
-            .getService(Components.interfaces.inIDOMUtils);
 
-/**
- * Determine if passed url is a system uri, adapted from Firebug
- * @requires true if url represent a system url
- */
-this.isSystemURL = function(url) {
-    if (!url) return true;
-    if (url.length == 0) return true;
-    if (url[0] == 'h') return false;
-    if (url.substr(0, 9) == "resource:")
-        return true;
-    return false;
-}
-
-this.isUserAgentCSSRule = function(rule) {
-    var href = rule.parentStyleSheet.href;  // Null means inline
-    return href != null && this.isSystemURL(rule.parentStyleSheet.href);
-}
+var allRules = null;
+var getMatchedCSSRules = (el, css = el.ownerDocument.styleSheets) => {
+    if (allRules === null) {
+        allRules = [].concat(...[...css].map(s => [...s.cssRules||[]]));
+    }
+    return allRules.filter(r => el.matches(r.selectorText));
+};
 
 /**
  * Fill the passed hashMap with selectors and associated style
@@ -77,16 +65,9 @@ this.isUserAgentCSSRule = function(rule) {
  */
 this.addStyles = function(node, hashMap) {
     if (node && hashMap) {
-        var rules = inIDOMUtils.getCSSStyleRules(node);
-
-        for (var i = 0; i < rules.Count(); i++) {
-            var rule = rules.GetElementAt(i);
-
-            if (!this.isUserAgentCSSRule(rule)) {
-                // if same selector is present more than once the last defined wins
-                hashMap[rule.cssText] = true;
-            }
-        }
+        getMatchedCSSRules(node).forEach((r) => {
+            hashMap[r.cssText] = true;
+        });
     }
 
     return hashMap;

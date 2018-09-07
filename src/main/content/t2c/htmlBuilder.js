@@ -297,7 +297,7 @@ function Builder(options) {
 
 Builder.prototype = {
     getNodeInfo : function(node) {
-        var handler = table2clipboard.builders.html.getHandler(node.localName);
+        var handler = table2clipboard.builders.html.getHandler(node.nodeName);
         if (handler) {
             return handler(this, node);
         }
@@ -353,7 +353,7 @@ Builder.prototype = {
                         if (this._attributeFilters) {
                             var newAttrs = table2clipboard.builders.html.applyAttributeFilters(
                                                 this._attributeFilters,
-                                                node.localName,
+                                                node.nodeName,
                                                 nodeInfo.attributes);
                             this.htmlOutput.printNodeAttributes(newAttrs);
                         } else {

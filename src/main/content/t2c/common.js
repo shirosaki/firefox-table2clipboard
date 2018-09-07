@@ -15,10 +15,6 @@ if (typeof(table2clipboard.common) == "undefined") {
 // Under mozilla composer <stringbundleset id="stringbundleset"> isn't available
 // so we use nsIStringBundleService
 
-var locale = Components.classes["@mozilla.org/intl/stringbundle;1"]
-    .getService(Components.interfaces.nsIStringBundleService)
-    .createBundle("chrome://t2c/locale/t2c.properties");
-
 this.isOSWin = function() {
     return top.window.navigator.platform.indexOf("Win") >= 0;
 }
@@ -26,31 +22,29 @@ this.isOSWin = function() {
 this.newLine = table2clipboard.common.isOSWin() ? "\r\n" : "\n";
 
 this.getLocalizedMessage = function(msg) {
-    return locale.GetStringFromName(msg);
+    return browser.i18n.getMessage(msg);
 }
 
 this.getFormattedMessage = function(msg, ar) {
-    return locale.formatStringFromName(msg, ar, ar.length);
+    return browser.i18n.getMessage(msg, ar);
 }
 
 this.getObserverService = function () {
-    return Components.classes["@mozilla.org/observer-service;1"]
-        .getService(Components.interfaces.nsIObserverService);
+    //return Components.classes["@mozilla.org/observer-service;1"]
+    //    .getService(Components.interfaces.nsIObserverService);
 }
 
 this.loadExternalUrl = function(url) {
-    var uri = Components.classes["@mozilla.org/network/standard-url;1"]
-                .createInstance(Components.interfaces.nsIURI);
-    uri.spec = url;
-    var prot = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
-                .getService(Components.interfaces.nsIExternalProtocolService);
-    prot.loadUrl(uri);
+    //var uri = Components.classes["@mozilla.org/network/standard-url;1"]
+    //            .createInstance(Components.interfaces.nsIURI);
+    //uri.spec = url;
+    //var prot = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
+    //            .getService(Components.interfaces.nsIExternalProtocolService);
+    //prot.loadUrl(uri);
 }
 
 this.log = function(message) {
-    Components.classes["@mozilla.org/consoleservice;1"]
-        .getService(Components.interfaces.nsIConsoleService)
-            .logStringMessage(message);
+    console.log(message);
 }
 
 this.htmlEncode = function(s, isAttValue, isCanonical) {
@@ -104,7 +98,7 @@ this.isTargetATextBox = function(node) {
     if (!node || node.nodeType != Node.ELEMENT_NODE)
         return false;
 
-    if (node.localName.toUpperCase() == "INPUT") {
+    if (node.nodeName.toUpperCase() == "INPUT") {
         var attrib = "";
         var type = node.getAttribute("type");
 
@@ -122,7 +116,7 @@ this.isTargetATextBox = function(node) {
                 (attrib != "BUTTON") &&
                 (attrib != "PASSWORD") );
     } else  {
-        return(node.localName.toUpperCase() == "TEXTAREA");
+        return(node.nodeName.toUpperCase() == "TEXTAREA");
     }
 }
 
@@ -137,7 +131,7 @@ this.getTextNodeContent = function(node) {
                 continue;
             }
             // preserve newlines
-            if (nl[i].localName.toUpperCase() == "BR") {
+            if (nl[i].nodeName.toUpperCase() == "BR") {
                 str += table2clipboard.common.newLine;
             }
         }
@@ -188,11 +182,11 @@ this.logException = function(ex, msg) {
 }
 
 this.makeAbsoluteUrl = function(base, relative) {
-    var uri = Components
-        .classes["@mozilla.org/network/standard-url;1"]
-        .createInstance(Components.interfaces.nsIURL);
-    uri.spec = base;
+    //var uri = Components
+    //    .classes["@mozilla.org/network/standard-url;1"]
+    //    .createInstance(Components.interfaces.nsIURL);
+    //uri.spec = base;
 
-    return uri.resolve(relative);
+    //return uri.resolve(relative);
 }
 }).apply(table2clipboard.common);
