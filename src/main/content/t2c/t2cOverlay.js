@@ -12,15 +12,10 @@ var gTable2Clip = {
 
     onLoad : function() {
         this.prefs = new Table2ClipPrefs();
-        window.addEventListener("mousedown", function(event) {
-            if (event.button == 2) {
-                gTable2Clip._popupNode = event.target;
-                gTable2Clip.setTableUnderCursor(event.target);
-            } else {
-                gTable2Clip._popupNode = null;
-                gTable2Clip.setTableUnderCursor(null);
-            }
-        }, false);
+        window.addEventListener("contextmenu", function(event) {
+            gTable2Clip._popupNode = event.target;
+            gTable2Clip.setTableUnderCursor(event.target);
+        }, true);
     },
 
     setTableUnderCursor : function (node) {
