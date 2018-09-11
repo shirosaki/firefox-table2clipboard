@@ -29,20 +29,6 @@ this.getFormattedMessage = function(msg, ar) {
     return browser.i18n.getMessage(msg, ar);
 }
 
-this.getObserverService = function () {
-    //return Components.classes["@mozilla.org/observer-service;1"]
-    //    .getService(Components.interfaces.nsIObserverService);
-}
-
-this.loadExternalUrl = function(url) {
-    //var uri = Components.classes["@mozilla.org/network/standard-url;1"]
-    //            .createInstance(Components.interfaces.nsIURI);
-    //uri.spec = url;
-    //var prot = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
-    //            .getService(Components.interfaces.nsIExternalProtocolService);
-    //prot.loadUrl(uri);
-}
-
 this.log = function(message) {
     console.log(message);
 }
@@ -182,11 +168,6 @@ this.logException = function(ex, msg) {
 }
 
 this.makeAbsoluteUrl = function(base, relative) {
-    //var uri = Components
-    //    .classes["@mozilla.org/network/standard-url;1"]
-    //    .createInstance(Components.interfaces.nsIURL);
-    //uri.spec = base;
-
-    //return uri.resolve(relative);
+    return new URL(relative, base).href;
 }
 }).apply(table2clipboard.common);

@@ -12,6 +12,8 @@ var gTable2Clip = {
 
     onLoad : function() {
         this.prefs = new Table2ClipPrefs();
+        table2clipboard.builders.html.registerAllHandlers();
+
         window.addEventListener("contextmenu", function(event) {
             gTable2Clip._popupNode = event.target;
             gTable2Clip.setTableUnderCursor(event.target);

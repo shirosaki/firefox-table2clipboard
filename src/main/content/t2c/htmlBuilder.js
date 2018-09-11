@@ -136,7 +136,7 @@ this.handlers = {
 
         if (t2cBuilder.options.copyLinks) {
             var hrefUrl = table2clipboard.common.makeAbsoluteUrl(
-                        window.content.document.location,
+                        window.document.location,
                         node.getAttribute('href'));
 
             nodeInfo.attributes = [{nodeName: 'href', nodeValue: hrefUrl}];
@@ -186,7 +186,7 @@ this.handlers = {
 
                 if (attr.nodeName == 'src') {
                     var srcUrl = table2clipboard.common.makeAbsoluteUrl(
-                                window.content.document.location,
+                                window.document.location,
                                 attr.nodeValue);
 
                     attrs.push({nodeName: 'src', nodeValue: srcUrl});
