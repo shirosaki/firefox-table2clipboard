@@ -37,50 +37,45 @@ Table2ClipFormat.prototype = {
 };
 
 function Table2ClipPrefs() {
-    this.prefBranch = Components
-        .classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefService)
-        .getBranch("extensions.dafizilla.table2clip.");
+    this.prefBranch = browser.storage.local;
 
     this.format = new Table2ClipFormat();
 }
 
 Table2ClipPrefs.prototype = {
     getString : function(prefName, defValue) {
-        var prefValue;
-        try {
-            prefValue = this.prefBranch.getCharPref(prefName);
-        } catch (ex) {
-            prefValue = null;
-        }
-        return prefValue == null ? defValue : prefValue;
+        return this.prefBranch.get({[prefName]: defValue});
     },
 
     getBool : function(prefName, defValue) {
-        var prefValue;
-        try {
-            prefValue = this.prefBranch.getBoolPref(prefName);
-        } catch (ex) {
-            prefValue = null;
-        }
-        return prefValue == null ? defValue : prefValue;
+        return this.prefBranch.get({[prefName]: defValue});
     },
 
     setString : function(prefName, prefValue) {
-        this.prefBranch.setCharPref(prefName, prefValue);
+        this.prefBranch.set({[prefName]: prefValue});
     },
 
     setBool : function(prefName, prefValue) {
-        this.prefBranch.setBoolPref(prefName, prefValue);
+        this.prefBranch.set({[prefName]: prefValue});
     },
 
     getClipFormat : function() {
-        this.format.rowSep = this.getString(T2CLIP_ROW_SEP,
-                                table2clipboard.common.newLine);
-        this.format.columnSep = this.getString(T2CLIP_COL_SEP, "\t");
-        this.format.appendRowSepAtEnd = this.getBool(T2CLIP_ROW_SEP_ATEND, true);
-
-        return this.format;
+        var format = this.format;
+        return Promise.all([
+            this.getString(T2CLIP_ROW_SEP,
+                            table2clipboard.common.newLine)
+            .then((data) => {
+                format.rowSep = data[Object.keys(data)[0]];
+            }),
+            this.getString(T2CLIP_COL_SEP, "\t")
+            .then((data) => {
+                format.columnSep = data[Object.keys(data)[0]];
+            }),
+            this.getBool(T2CLIP_ROW_SEP_ATEND, true)
+            .then((data) => {
+                format.appendRowSepAtEnd = data[Object.keys(data)[0]];
+            })
+        ]);
     },
 
     setClipFormat : function(format) {

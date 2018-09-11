@@ -4,7 +4,7 @@ function getAncestorsString(node) {
     var arr = [];
     
     while (node) {
-        arr.push(node.localName);
+        arr.push(node.nodeName);
         node = node.parentNode;
     }
     return arr.join("->");
@@ -26,7 +26,7 @@ function onloadPage() {
     
     window.addEventListener('mousemove', function(event) {
         var node = event.target;
-        var s = node.localName + "<br/>"
+        var s = node.nodeName + "<br/>"
                 + getAncestorsString(node);
                 + ((node instanceof HTMLTableElement) ? "HTMLTableElement"
                   : (node instanceof HTMLTableCellElement) ? "HTMLTableCellElement"
@@ -175,7 +175,7 @@ var t2c = {
 var t2cPureHTML = {
     isTableSelection : function(node) {
         this._selectedTable = null;
-        var nodeName = node.localName && node.localName.toUpperCase();
+        var nodeName = node.nodeName && node.nodeName.toUpperCase();
 
         if (nodeName == "TR" || nodeName == "TH") {
             return true;
@@ -187,7 +187,7 @@ var t2cPureHTML = {
         }
         var nl = node.childNodes;
         for (var i = 0; i < nl.length; i++) {
-            if (node.localName.toUpperCase() == "TABLE") {
+            if (node.nodeName.toUpperCase() == "TABLE") {
                 this._selectedTable = nl[i];
                 return true;
             }

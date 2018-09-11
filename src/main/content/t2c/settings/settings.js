@@ -4,9 +4,59 @@
  */
 var gTable2ClipSettings = {
     onLoad : function() {
+        var labels = document.querySelectorAll('*[data-label]');
+        for (var i = 0; i < labels.length; i++) {
+            labels[i].textContent = browser.i18n.getMessage(labels[i].dataset.label);
+        }
+
+        var tooltips = document.querySelectorAll('*[data-tooltip]');
+        for (var i = 0; i < tooltips.length; i++) {
+            tooltips[i].title = browser.i18n.getMessage(tooltips[i].dataset.tooltip);
+        }
+
+        var tabs = document.querySelector('.tabs');
+        tabs.addEventListener('click', (event) => {
+            if (!event.target.parentNode.classList.contains('tabs')) {
+                return;
+            }
+            var tabs = document.querySelectorAll('.tabs > div');
+            var contents = document.querySelectorAll('.tab-contents > div');
+            for (var i = 0; i < tabs.length; i++) {
+                var tab = tabs[i];
+                if (tab === event.target) {
+                    tab.classList.add('active');
+                    contents[i].classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                    contents[i].classList.remove('active');
+                }
+            }
+        });
+
+        document.querySelector('.row-sep [data-label="menu.special.tab"]')
+        .addEventListener('click', () => {
+            gTable2ClipSettings.insertSpecial('rowSep', 'tab');
+        });
+        document.querySelector('.row-sep [data-label="menu.special.newline"]')
+        .addEventListener('click', () => {
+            gTable2ClipSettings.insertSpecial('rowSep', 'newline');
+        });
+        document.querySelector('.column-sep [data-label="menu.special.tab"]')
+        .addEventListener('click', () => {
+            gTable2ClipSettings.insertSpecial('columnSep', 'tab');
+        });
+        document.querySelector('.column-sep [data-label="menu.special.newline"]')
+        .addEventListener('click', () => {
+            gTable2ClipSettings.insertSpecial('columnSep', 'newline');
+        });
+
+        document.querySelector('.save-button')
+        .addEventListener('click', () => {
+            gTable2ClipSettings.onAccept();
+        });
+
         this.prefs = new Table2ClipPrefs();
         this.initControls();
-        window.sizeToContent();
     },
 
     onAccept : function() {
@@ -54,51 +104,35 @@ var gTable2ClipSettings = {
         this.initValues(true);
     },
 
-    getNavigationWindow : function() {
-        var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-        var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-        var win = windowManagerInterface.getMostRecentWindow("navigator:browser");
-
-        if (!win) {
-            win = window.openDialog(
-                "chrome://browser/content/browser.xul",
-                "_blank",
-                "chrome,all,dialog=no",
-                "about:blank", null, null);
-        }
-
-        return win;
-    },
-
-    openUrl : function(aEvent) {
-        var url = aEvent.currentTarget.getAttribute("url");
-
-        try {
-            var navWin = this.getNavigationWindow();
-            var browser = navWin.document.getElementById("content");
-
-            browser.selectedTab = browser.addTab(url);
-        } catch (err) {
-            // This isn't a browser (e.g. Thunderbird, NVU)
-            try {
-                table2clipboard.common.loadExternalUrl(url);
-            } catch (err) {
-            }
-        }
-    },
-
     initValues : function(changeProfilePath) {
-        var format = this.prefs.getClipFormat();
+        var format = this.prefs.format;
+        this.prefs.getClipFormat()
+        .then((() => {
+            this.oRowSep.value = this.unescape(format.rowSep);
+            this.oColumnSep.value = this.unescape(format.columnSep);
+            this.oAppendSep.checked = format.appendRowSepAtEnd;
 
-        this.oRowSep.value = this.unescape(format.rowSep);
-        this.oColumnSep.value = this.unescape(format.columnSep);
-        this.oAppendSep.checked = format.appendRowSepAtEnd;
-
-        this.oCopyLinks.checked = this.prefs.getBool("copyLinks");
-        this.oCopyStyles.checked = this.prefs.getBool("copyStyles");
-        this.oCopyImages.checked = this.prefs.getBool("copyImages");
-        this.oCopyFormElements.checked = this.prefs.getBool("copyFormElements");
-        this.oAttributeFiltersPattern.value = this.prefs.getString("attributeFiltersPattern");
+            this.prefs.getBool("copyLinks", true)
+            .then(((data) => {
+                this.oCopyLinks.checked = data.copyLinks;
+            }).bind(this));
+            this.prefs.getBool("copyStyles", true)
+            .then(((data) => {
+                this.oCopyStyles.checked = data.copyStyles;
+            }).bind(this));
+            this.prefs.getBool("copyImages", true)
+            .then(((data) => {
+                this.oCopyImages.checked = data.copyImages;
+            }).bind(this));
+            this.prefs.getBool("copyFormElements", true)
+            .then(((data) => {
+                this.oCopyFormElements.checked = data.copyFormElements;
+            }).bind(this));
+            this.prefs.getString("attributeFiltersPattern", '')
+            .then(((data) => {
+                this.oAttributeFiltersPattern.value = data.attributeFiltersPattern;
+            }).bind(this));
+        }).bind(this));
     },
 
     unescape : function(str2unescape) {
@@ -174,3 +208,7 @@ var gTable2ClipSettings = {
         }
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    gTable2ClipSettings.onLoad();
+});

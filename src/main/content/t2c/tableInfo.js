@@ -207,8 +207,8 @@ if (typeof table2clipboard.tableInfo == "undefined") {
 
         // find also non-text node that has not tag name (the document object)
         while (node
-               && ((node.localName && node.localName.toLowerCase() != tagName)
-                   || (!node.localName && node.nodeType != TEXT_NODE))) {
+               && ((node.nodeName && node.nodeName.toLowerCase() != tagName)
+                   || (!node.nodeName && node.nodeType != TEXT_NODE))) {
             node = node.parentNode;
         }
         return node;
@@ -227,7 +227,7 @@ if (typeof table2clipboard.tableInfo == "undefined") {
             rootNode,
             NodeFilter.SHOW_ELEMENT,
             function(node) {
-                if (node.localName.toLowerCase() == "table") {
+                if (node.nodeName.toLowerCase() == "table") {
                     // table node must be added to array but its children must
                     // be rejected so nested tables (if present) will be skipped.
                     // we fill the array here instead of on the traversal loop

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title data-label="settings.title"></title>
+		<link rel="stylesheet" href="../../../skin/classic/t2c/settings.css" type="text/css" media="all" />
+	</head>
+	<body id="t2cSettingsDialog">
+
+  <div id="t2cTabBox" flex="1" persist="selectedIndex">
+    <div class="tabs">
+      <div data-label="csv" class="active"></div>
+			<div data-label="html"></div>
+    </div>
+    <div class="tab-contents">
+			<div class="active">
+				<section>
+            <label data-label="rowSeparator"></label>
+						<div class="flex-item row-sep">
+								<input type="text" id="rowSep" />
+								&nbsp;
+								<label id="rowSpecialCharsMenu" data-label="menu.special"></label>
+								<span>: </span>
+								<button data-label="menu.special.tab"></button>
+								<button data-label="menu.special.newline"></button>
+						</div>
+						<div class="flex-item">
+							<input type="checkbox" id="appendRowSep" />
+							<label for="appendRowSep" data-label="appendRowSep"></label>
+						</div>
+        </section>
+        <section>
+            <label data-label="colSeparator"></label>
+						<div class="flex-item column-sep">
+								<input type="text" id="columnSep" />
+								&nbsp;
+								<label id="columnSpecialCharsMenu" data-label="menu.special"></label>
+								<span>: </span>
+								<button data-label="menu.special.tab"></button>
+								<button data-label="menu.special.newline"></button>
+						</div>
+        </section>
+      </div>
+
+			<div>
+				<section>
+            <label data-label="copy.options"></label>
+						<div>
+								<div class="flex-item">
+									<input type="checkbox" id="copyLinks" />
+									<label for="copyLinks" data-label="copy.links"></label>
+								</div>
+								<div class="flex-item">
+									<input type="checkbox" id="copyStyles" />
+									<label for="copyStyles" data-label="copy.styles"></label>
+								</div>
+								<div class="flex-item">
+									<input type="checkbox" id="copyImages" />
+									<label for="copyImages" data-label="copy.images"></label>
+								</div>
+								<div class="flex-item">
+									<input type="checkbox" id="copyFormElements" />
+									<label id="copyFormElements" data-label="copy.form.elements"></label>
+								</div>
+								<div class="flex-item">
+									<label data-label="styles.warning"></label>
+								</div>
+            </div>
+        </section>
+				<section>
+            <label data-label="html.attribute.filters"></label>
+            <div class="flex-item">
+                <label value="html.attribute.filters.patterns" control="attributeFilters"></label>
+								<textarea id="attributeFiltersPattern"></textarea>
+						</div>
+						<div style="text-align:right">
+							<a href="https://github.com/dafizilla/firefox-table2clipboard/wiki/attrsFilters"
+									class="link"
+									data-label="html.attribute.filters.doc" id="filterDocLink"></a>
+						</div>
+				</section>
+			</div>
+    </div>
+  </div>
+
+  <div>
+		<hr>
+		<div class="flex-item-end">
+      <label data-label="writtenBy"></label>
+			&nbsp;
+      <a id="table2ClipLink"
+          data-tooltip="table2Clip.home.tooltip"
+          class="link"
+          href="http://dafizilla.sourceforge.net/table2clip/">Davide Ficano</a>
+    </div>
+		<div class="flex-item-end">
+			<button class="save-button" data-label="save"></button>
+    </div>
+  </div>
+
+    <script src="../common.js"></script>
+    <script src="../prefs.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>

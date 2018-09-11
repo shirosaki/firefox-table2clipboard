@@ -136,7 +136,7 @@ this.handlers = {
 
         if (t2cBuilder.options.copyLinks) {
             var hrefUrl = table2clipboard.common.makeAbsoluteUrl(
-                        window.content.document.location,
+                        window.document.location,
                         node.getAttribute('href'));
 
             nodeInfo.attributes = [{nodeName: 'href', nodeValue: hrefUrl}];
@@ -186,7 +186,7 @@ this.handlers = {
 
                 if (attr.nodeName == 'src') {
                     var srcUrl = table2clipboard.common.makeAbsoluteUrl(
-                                window.content.document.location,
+                                window.document.location,
                                 attr.nodeValue);
 
                     attrs.push({nodeName: 'src', nodeValue: srcUrl});
@@ -297,7 +297,7 @@ function Builder(options) {
 
 Builder.prototype = {
     getNodeInfo : function(node) {
-        var handler = table2clipboard.builders.html.getHandler(node.localName);
+        var handler = table2clipboard.builders.html.getHandler(node.nodeName);
         if (handler) {
             return handler(this, node);
         }
@@ -353,7 +353,7 @@ Builder.prototype = {
                         if (this._attributeFilters) {
                             var newAttrs = table2clipboard.builders.html.applyAttributeFilters(
                                                 this._attributeFilters,
-                                                node.localName,
+                                                node.nodeName,
                                                 nodeInfo.attributes);
                             this.htmlOutput.printNodeAttributes(newAttrs);
                         } else {

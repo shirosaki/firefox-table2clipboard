@@ -102,7 +102,7 @@ function getNodeAttrs(node, attributeFilters) {
 
         if (attributeFilters) {
             var newAttrs = htmlBuildersNS.applyAttributeFilters(attributeFilters,
-                                            node.localName,
+                                            node.nodeName,
                                             node.attributes);
             attrs.printNodeAttributes(newAttrs);
         } else {
