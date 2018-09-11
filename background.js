@@ -142,7 +142,7 @@ browser.menus.onShown.addListener((info, tab) => {
             browser.menus.update(selectTableColumnId, {
                 enabled: isOnTable && isOnCell
             }),
-        ]) .then(() => {
+        ]).then(() => {
             browser.menus.refresh();
         });
     });
