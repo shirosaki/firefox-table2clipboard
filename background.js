@@ -97,7 +97,7 @@ function loadScripts() {
 }
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete') {
+    if (changeInfo.status === 'loading') {
         loadScripts();
     }
 });
