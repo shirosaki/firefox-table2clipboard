@@ -24,6 +24,15 @@
     ]
   },
 
+  "commands": {
+    "copy-selected-cells": {
+      "suggested_key": {
+        "default": "Alt+C"
+      },
+      "description": "Copy selected cells to clipboard"
+    }
+  },
+
   "options_ui": {
     "browser_style": true,
     "page": "src/main/content/t2c/settings/settings.html"

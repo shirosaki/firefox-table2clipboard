@@ -6,7 +6,7 @@ let parentId = browser.menus.create({
 
 let copySelectedCellsId = browser.menus.create({
     id: "copy-selected-cells",
-    title: browser.i18n.getMessage("copySelectedCells"),
+    title: browser.i18n.getMessage("copySelectedCells") + ' Alt+C',
     contexts: ["all"],
     parentId,
     onclick: copySelectedCells
@@ -146,6 +146,12 @@ browser.menus.onShown.addListener((info, tab) => {
             browser.menus.refresh();
         });
     });
+});
+
+browser.commands.onCommand.addListener((name) => {
+    if (name === 'copy-selected-cells') {
+        copySelectedCells();
+    }
 });
 
 function copySelectedCells() {
