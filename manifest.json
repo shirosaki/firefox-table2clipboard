@@ -31,7 +31,7 @@
 
   "permissions": [
     "<all_urls>",
-    "tabs",
+    "activeTab",
     "menus",
     "storage",
     "clipboardWrite"
