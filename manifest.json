@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Table2Clipboard",
-  "version": "1.6.1.0",
+  "version": "1.6.2.0",
 
   "description": "Allow to copy to clipboard an HTML table rows/columns selection correctly formatted.",
   "applications": {
