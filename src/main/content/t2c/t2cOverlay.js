@@ -8,7 +8,6 @@ var gTable2Clip = {
     _selectedTable : null,
     _tableUnderCursor : null,
     _popupNode : null,
-    _htmlOptions: null,
 
     onLoad : function() {
         this.prefs = new Table2ClipPrefs();
@@ -64,42 +63,11 @@ var gTable2Clip = {
         // Overwrite the clipboard content.
         event.preventDefault();
         with (table2clipboard.formatters) {
-            var textHtml = html.format(tableInfo, this._htmlOptions);
+            var textHtml = html.format(tableInfo, this.prefs.htmlOptions);
             var textCSV = csv.format(tableInfo, this.prefs.format);
         }
         event.clipboardData.setData("text/plain", textCSV);
         event.clipboardData.setData("text/html", textHtml);
-    },
-
-    /**
-     * Return the options to use to copy HTML table
-     * @returns the object {copyStyles, copyLinks, copyImages, copyFormElements}
-     */
-    getHtmlOptions : function() {
-        var self = this;
-        this._htmlOptions = {};
-        return Promise.all([
-             this.prefs.getBool("copyStyles")
-             .then((data) => {
-                 self._htmlOptions.copyStyles = data.copyStyles;
-             }),
-             this.prefs.getBool("copyLinks")
-             .then((data) => {
-                 self._htmlOptions.copyLinks = data.copyLinks;
-             }),
-             this.prefs.getBool("copyImages")
-             .then((data) => {
-                 self._htmlOptions.copyImages = data.copyImages;
-             }),
-             this.prefs.getBool("copyFormElements")
-             .then((data) => {
-                 self._htmlOptions.copyFormElements = data.copyFormElements;
-             }),
-             this.prefs.getString("attributeFiltersPattern")
-             .then((data) => {
-                 self._htmlOptions.attributeFiltersPattern = data.attributeFiltersPattern;
-             })
-        ]);
     },
 
     // From browser.js
@@ -160,8 +128,8 @@ var gTable2Clip = {
         document.addEventListener("copy", oncopy, true);
 
         Promise.all([
-            this.getHtmlOptions(),
-            this.prefs.getClipFormat()
+            this.prefs.getClipFormat(),
+            this.prefs.getHtmlOptions()
         ]).then(() => {
             // Requires the clipboardWrite permission, or a user gesture:
             document.execCommand("copy");
@@ -181,8 +149,8 @@ var gTable2Clip = {
         document.addEventListener("copy", oncopy, true);
 
         Promise.all([
-            this.getHtmlOptions(),
-            this.prefs.getClipFormat()
+            this.prefs.getClipFormat(),
+            this.prefs.getHtmlOptions()
         ]).then(() => {
             // Requires the clipboardWrite permission, or a user gesture:
             document.execCommand("copy");

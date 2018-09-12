@@ -40,6 +40,7 @@ function Table2ClipPrefs() {
     this.prefBranch = browser.storage.local;
 
     this.format = new Table2ClipFormat();
+    this.htmlOptions = {};
 }
 
 Table2ClipPrefs.prototype = {
@@ -75,6 +76,36 @@ Table2ClipPrefs.prototype = {
             .then((data) => {
                 format.appendRowSepAtEnd = data[Object.keys(data)[0]];
             })
+        ]);
+    },
+
+    /**
+     * Set the options to use to copy HTML table
+     * @returns the promise object
+     */
+    getHtmlOptions : function() {
+        var htmlOptions = this.htmlOptions;
+        return Promise.all([
+             this.getBool("copyStyles", true)
+             .then((data) => {
+                 htmlOptions.copyStyles = data.copyStyles;
+             }),
+             this.getBool("copyLinks", true)
+             .then((data) => {
+                 htmlOptions.copyLinks = data.copyLinks;
+             }),
+             this.getBool("copyImages", true)
+             .then((data) => {
+                 htmlOptions.copyImages = data.copyImages;
+             }),
+             this.getBool("copyFormElements", true)
+             .then((data) => {
+                 htmlOptions.copyFormElements = data.copyFormElements;
+             }),
+             this.getString("attributeFiltersPattern", '')
+             .then((data) => {
+                 htmlOptions.attributeFiltersPattern = data.attributeFiltersPattern;
+             })
         ]);
     },
 

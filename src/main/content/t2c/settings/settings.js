@@ -106,32 +106,19 @@ var gTable2ClipSettings = {
 
     initValues : function(changeProfilePath) {
         var format = this.prefs.format;
-        this.prefs.getClipFormat()
-        .then((() => {
+        var htmlOptions = this.prefs.htmlOptions;
+        Promise.all([
+            this.prefs.getClipFormat(),
+            this.prefs.getHtmlOptions()
+        ]).then((() => {
             this.oRowSep.value = this.unescape(format.rowSep);
             this.oColumnSep.value = this.unescape(format.columnSep);
             this.oAppendSep.checked = format.appendRowSepAtEnd;
-
-            this.prefs.getBool("copyLinks", true)
-            .then(((data) => {
-                this.oCopyLinks.checked = data.copyLinks;
-            }).bind(this));
-            this.prefs.getBool("copyStyles", true)
-            .then(((data) => {
-                this.oCopyStyles.checked = data.copyStyles;
-            }).bind(this));
-            this.prefs.getBool("copyImages", true)
-            .then(((data) => {
-                this.oCopyImages.checked = data.copyImages;
-            }).bind(this));
-            this.prefs.getBool("copyFormElements", true)
-            .then(((data) => {
-                this.oCopyFormElements.checked = data.copyFormElements;
-            }).bind(this));
-            this.prefs.getString("attributeFiltersPattern", '')
-            .then(((data) => {
-                this.oAttributeFiltersPattern.value = data.attributeFiltersPattern;
-            }).bind(this));
+            this.oCopyLinks.checked = htmlOptions.copyLinks;
+            this.oCopyStyles.checked = htmlOptions.copyStyles;
+            this.oCopyImages.checked = htmlOptions.copyImages;
+            this.oCopyFormElements.checked = htmlOptions.copyFormElements;
+            this.oAttributeFiltersPattern.value = htmlOptions.attributeFiltersPattern;
         }).bind(this));
     },
 
